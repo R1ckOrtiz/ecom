@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Login</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Acesse sua conta e explore nossos produtos</p>
+        </div>
+    </div>
+</header>
+
+<!-- Login Form Section -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Faça login na sua conta</h3>
+                    
+                    <!-- Login Form -->
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <!-- Username -->
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Digite seu usuário" required>
+                            <label for="username">Usuário</label>
+                        </div>
+                        
+                        <!-- Password -->
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" name="password" id="password" placeholder="Digite sua senha" required>
+                            <label for="password">Senha</label>
+                        </div>
+                        
+                        <!-- Login Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-dark btn-lg">Login</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Footer Links -->
+                <div class="card-footer text-center py-3">
+                    <p class="small">
+                        Não tem uma conta? 
+                        <a href="{% url 'register' %}">Cadastre-se aqui</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

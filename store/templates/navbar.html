@@ -1,0 +1,84 @@
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container px-4 px-lg-5">
+        <a class="navbar-brand fw-bold" href="{% url 'home' %}">Geek Ecommerce</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <!-- Home -->
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Casa</a>
+                </li>
+                <!-- Search -->
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'search' %}active{% endif %}" href="{% url 'search' %}">Procurar</a>
+                </li>
+                <!-- About -->
+                <li class="nav-item">
+                    <a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">Sobre</a>
+                </li>
+
+                <!-- Profile Dropdown -->
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Perfil
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="{% url 'update_user' %}">Perfil Usuario</a></li>
+                        <li><a class="dropdown-item" href="{% url 'update_info' %}">Informações Usuario</a></li>
+                    </ul>
+                </li>
+
+                <!-- Orders Dropdown (For Superuser) -->
+                {% if user.is_superuser %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="ordersDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Ordens
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="ordersDropdown">
+                        <li><a class="dropdown-item" href="{% url 'shipped_dash' %}">Ordem de Compra</a></li>
+                        <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}">Compra Pendente</a></li>
+                    </ul>
+                </li>
+                {% endif %}
+                <!-- Logout -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <!-- Login and Register for Unauthenticated Users -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Registrar</a>
+                </li>
+                {% endif %}
+
+                <!-- Categories Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Categorias
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                        <li><a class="dropdown-item" href="{% url 'category_summary' %}">Todos os Produtos</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <!-- Cart Button -->
+            <form class="d-flex">
+                <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark">
+                    <i class="bi-cart-fill me-1"></i>
+                    Carrinho
+                    <span class="badge bg-dark text-white ms-1 rounded-pill" id="cart_quantity">
+                        {{ cart|length }}
+                    </span>
+                </a>
+            </form>
+        </div>
+    </div>
+</nav>

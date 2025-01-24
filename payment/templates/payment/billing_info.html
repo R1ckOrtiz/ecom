@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Billing Info{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Informações de Pagamento</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Insira os detalhes do pagamento abaixo</p>
+        </div>
+    </div>
+</header>
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <!-- Order Summary -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Resumo do Pedido
+                </div>
+                <div class="card-body">
+                    {% for product in cart_products %}
+                        <p><strong>{{ product.name }}</strong>: 
+                            {% if product.is_sale %}
+                                <span class="text-success">${{ product.sale_price }}</span>
+                            {% else %}
+                                ${{ product.price }}
+                            {% endif %}
+                        </p>
+                        <small>Quantidade: 
+                            {% for key, value in quantities.items %}
+                                {% if key == product.id|slugify %}
+                                    {{ value }}
+                                {% endif %}
+                            {% endfor %}
+                        </small>
+                        <hr>
+                    {% endfor %}
+                    <p class="text-end"><strong>Total: ${{ totals }}</strong></p>
+                    <div class="text-center">
+                        <a href="{% url 'cart_summary' %}" class="btn btn-outline-secondary btn-sm">Atualizar Itens</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Info -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Informações de Envio
+                </div>
+                <div class="card-body">
+                    <p>Nome: {{ shipping_info.shipping_full_name }}</p>
+                    <p>Email: {{ shipping_info.shipping_email }}</p>
+                    <p>Endereço 1: {{ shipping_info.shipping_address1 }}</p>
+                    <p>Endereço 2: {{ shipping_info.shipping_address2 }}</p>
+                    <p>Cidade: {{ shipping_info.shipping_city }}</p>
+                    <p>Estado: {{ shipping_info.shipping_state }}</p>
+                    <p>CEP: {{ shipping_info.shipping_zipcode }}</p>
+                    <p>País: {{ shipping_info.shipping_country }}</p>
+                    <div class="text-center">
+                        <a href="{% url 'checkout' %}" class="btn btn-outline-secondary btn-sm">Atualizar Envio</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PayPal Form -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Pagamento
+                </div>
+                <div class="card-body text-center">
+                    {{ paypal_form.render }}
+                </div>
+            </div>
+
+            <!-- Billing Info -->
+            <div class="card">
+                <div class="card-header">
+                    Informações de Cobrança
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'process_order' %}">
+                        {% csrf_token %}
+                        {{ billing_form.as_p }}
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-secondary">
+                                Pagar Agora
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

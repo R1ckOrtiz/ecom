@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Pedido{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Pedido #{{ order.id }}</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Detalhes do pedido e status de envio</p>
+        </div>
+    </div>
+</header>
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Card de Detalhes do Pedido -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    Pedido #{{ order.id }} - Total: ${{ order.amount_paid }}
+                </div>
+                <div class="card-body">
+                    <p><strong>Email do Cliente:</strong> {{ order.email }}</p>
+                    {% if order.date_shipped %}
+                        <p><strong>Data de Envio:</strong> {{ order.date_shipped|date:"d/m/Y H:i" }}</p>
+                    {% else %}
+                        <p><strong>Data do Pedido:</strong> {{ order.date_ordered|date:"d/m/Y H:i" }}</p>
+                    {% endif %}
+                    <hr>
+                    <p><strong>Nome do Cliente:</strong> {{ order.full_name }}</p>
+                    <p><strong>Endereço de Envio:</strong></p>
+                    <pre>{{ order.shipping_address }}</pre>
+                    <hr>
+                    <h5>Itens do Pedido</h5>
+                    {% for item in items %}
+                        <p>{{ item.product }} - Quantidade: {{ item.quantity }} - Preço Unitário: ${{ item.price }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Botão de Atualizar Status de Envio -->
+            <div class="text-center">
+                {% if not order.shipped %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="shipping_status" value="true">
+                        <button type="submit" class="btn btn-success">Marcar Como Enviado</button>
+                    </form>
+                {% else %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="shipping_status" value="false">
+                        <button type="submit" class="btn btn-danger">Marcar Como Não Enviado</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

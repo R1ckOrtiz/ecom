@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Atualizar Informações{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Atualizar Informações</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Mantenha seu perfil sempre atualizado</p>
+        </div>
+    </div>
+</header>
+
+<!-- Update Info Section -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Card Design -->
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-body p-5">
+                    <h3 class="text-center mb-4">Atualizar Informações do Perfil</h3>
+
+                    <!-- Update Info Form -->
+                    <form method="POST" action="{% url 'update_info' %}">
+                        {% csrf_token %}
+
+                        <!-- Billing Information Section -->
+                        <div class="mb-4">
+                            <h5 class="text-primary fw-bold">Informações de Cobrança</h5>
+                            <hr class="mt-0 mb-3">
+                            {% for field in form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                                    {{ field.label }}
+                                </label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                <div class="form-text text-muted small">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Shipping Information Section -->
+                        <div class="mb-4">
+                            <h5 class="text-primary fw-bold">Informações de Envio</h5>
+                            <hr class="mt-0 mb-3">
+                            {% for field in shipping_form %}
+                            <div class="mb-3">
+                                <label for="{{ field.id_for_label }}" class="form-label fw-bold">
+                                    {{ field.label }}
+                                </label>
+                                {{ field }}
+                                {% if field.help_text %}
+                                <div class="form-text text-muted small">{{ field.help_text }}</div>
+                                {% endif %}
+                                {% if field.errors %}
+                                <div class="text-danger small mt-1">{{ field.errors|join:", " }}</div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold">Atualizar Perfil</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

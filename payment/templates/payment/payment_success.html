@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Pagamento Bem Sucedido{% endblock %}
+
+{% block content %}
+<!-- Header -->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Pagamento Bem Sucedido!</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Sua compra está completa!</p>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Obrigado pela sua compra!</h5>
+                    <p class="card-text">Recebemos seu pagamento e você receberá um e-mail de confirmação em breve.</p>
+                    <a href="/" class="btn btn-primary">Voltar à Página Inicial</a>
+                    <a href="/product" class="btn btn-secondary">Continuar Comprando</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
